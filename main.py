@@ -36,32 +36,22 @@ class SalaryEstimator():
     def getCSVFiles(self):
         username = str(os.getlogin())
         path1 = "C:\\Users\\"+username+"\\Downloads\\*.csv"
-        
         list_of_files = glob.glob(path1) 
-        # print(list_of_files)
         return list_of_files
     
     def onSelectCombo(self,filename,yoe_to_predict):
         df = pd.read_csv(filename)
         print(df.columns)
 
-        # Linear Regression ML code
+        # Regression ML code
         try:
             yoe = [x for x in df.columns if 'years' in x.lower() ][0]
             salary = [x for x in df.columns if 'salary' in x.lower()][0]
             age = [x for x in df.columns if 'age' in x.lower()][0]
-
-
-            # df[yoe].fillna(df[yoe].mean())
-            # df[age].fillna(df[age].mean())
             df[salary] = df[salary].replace('\$|,', '', regex=True)
             df[salary].fillna('',inplace=True)
-            
             X = df[[yoe,age]]
-            
             Y = df[[salary]]
-
-
             imputer = SimpleImputer(missing_values=np.nan,strategy='mean')
             imputer.fit(X)
 
