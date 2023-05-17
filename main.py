@@ -10,7 +10,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.impute import SimpleImputer
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
-
+import traceback
 
 class SalaryEstimator():
     def __init__(self):
@@ -47,15 +47,19 @@ class SalaryEstimator():
 
         # Linear Regression ML code
         try:
-            yoe = [x for x in df.columns if 'ears' in x ][0]
-            salary = [x for x in df.columns if 'alary' in x][0]
-            
-            df[yoe].fillna(0,inplace=True)
+            yoe = [x for x in df.columns if 'years' in x.lower() ][0]
+            salary = [x for x in df.columns if 'salary' in x.lower()][0]
+            age = [x for x in df.columns if 'age' in x.lower()][0]
+
+
+            # df[yoe].fillna(df[yoe].mean())
+            # df[age].fillna(df[age].mean())
             df[salary] = df[salary].replace('\$|,', '', regex=True)
             df[salary].fillna('',inplace=True)
             
-            X = df[[yoe]].values
-            Y = df[[salary]].values
+            X = df[[yoe,age]]
+            
+            Y = df[[salary]]
 
 
             imputer = SimpleImputer(missing_values=np.nan,strategy='mean')
@@ -69,7 +73,7 @@ class SalaryEstimator():
             print(y_pred_test)
             # print('R2 score:'+r2_score(Y_test,y_pred))  
         except Exception as e:
-            print(e)
+            traceback.print_exc()
 
 
     
