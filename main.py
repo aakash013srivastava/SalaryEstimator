@@ -49,11 +49,12 @@ class SalaryEstimator():
         try:
             yoe = [x for x in df.columns if 'ears' in x ][0]
             salary = [x for x in df.columns if 'alary' in x][0]
-            print(salary)
+            
             df[yoe].fillna(0,inplace=True)
-            X = df[[yoe]].values
             df[salary] = df[salary].replace('\$|,', '', regex=True)
             df[salary].fillna('',inplace=True)
+            
+            X = df[[yoe]].values
             Y = df[[salary]].values
 
 
